@@ -60,13 +60,47 @@ async function getRandomBlock() {
             result = 'Confronto';
     }
 }
-
+async function logRollResults(characterename, block, diceResult, atribute) {
+    console.log(`${characterename} rolou o dado de ${block} e obteve ${diceResult}+ ${atribute} = ${diceResult + atribute}`);
+}
 async function playRaceEngine(charactere1, charactere2) {
     for(let round = 1; round <= 5; round++) {
         console.log(`\n🏁 Rodada ${round} 🏁`);
         
         let block = await getRandomBlock();
         console.log(`Bloco: ${block}`);
+
+        
+        let dice1 = await rollDice();
+        let dice2 = await rollDice();
+
+
+        let testSkill1 = 0;
+        let testSkill2 = 0;
+
+        if (block === 'reta') {
+            testSkill1 = charactere1.velocidade + dice1;
+            testSkill2 = charactere2.velocidade + dice2;
+            await logRollResults(charactere1.name, block, dice1, charactere1.velocidade);
+            await logRollResults(charactere2.name, block, dice2, charactere2.velocidade);
+        }
+        
+        else if (block === 'curva') {
+            testSkill1 = charactere1.manobrabilidade + dice1;
+            testSkill2 = charactere2.manobrabilidade + dice2;
+
+
+            await logRollResults(charactere1.name, block, dice1, charactere1.manobrabilidade);
+            await logRollResults(charactere2.name, block, dice2, charactere2.manobrabilidade);
+        }
+        else if (block === 'Confronto') {
+            testSkill1 = charactere1.poder + dice1;
+            testSkill2 = charactere2.poder + dice2;
+
+
+            await logRollResults(charactere1.name, block, dice1, charactere1.poder);
+            await logRollResults(charactere2.name, block, dice2, charactere2.poder);
+        }
     }
 
 }
